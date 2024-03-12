@@ -1,0 +1,22 @@
+-hono is similar to express
+-express doesn't work well with - edge enviroments like cloudfare workers and other serverless functions
+-hono is built to work on edge enviroments and other serverless functions
+-hono is http framework
+
+Q -> why cloudwork it's called serverless
+A -> whenever you deploy you application, it gets deployed in many mini machines. 
+when you start start you application, it gets started everywhere
+
+Q -> why prisma
+A -> postgres doesn't support 1000s of connection, but in case of a serverless enviroment
+many mini machine connects to postgres db, 
+so in case of a serverless enviroment we will not directly connect to db
+but will connect it through a "pool"
+
+Q -> how prisma makes money
+A -> gives you access to connection pool, caching, etc.
+
+Q -> does prisma provides connection pool, if yes then does it mean that it's optional to use?
+
+Q -> why we have to write real db in .env and not prisma (connection pool) DATABASE_URL
+
