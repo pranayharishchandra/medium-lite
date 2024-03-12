@@ -12,3 +12,24 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// bi-directional relation "User <-> Post"
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  name     String?
+  password String
+  posts    Post[]
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+}
+
+// you can remove the following - but you should not, it helps in checkiing of validity of a post only if it's written by a user that actually exists
+//   posts    Post[], author    User     @relation(fields: [authorId], references: [id])

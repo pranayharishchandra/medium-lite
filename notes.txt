@@ -20,3 +20,7 @@ Q -> does prisma provides connection pool, if yes then does it mean that it's op
 
 Q -> why we have to write real db in .env and not prisma (connection pool) DATABASE_URL
 
+Q -> npx prisma migrate dev --name init_schema
+A -> this command creates a "prisma/midgration" folder where your SQL commands to create the table is created.
+When you run this command, Prisma will look at your Prisma schema file (usually named schema.prisma), compare it with the current state of the database, and generate a migration file if necessary to bring the database schema up to date with the schema defined in your Prisma schema file. The migration file will be named according to the provided --name flag, in this case, init_schema.
+
