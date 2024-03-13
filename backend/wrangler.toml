@@ -4,3 +4,5 @@ compatibility_date = "2023-12-01"
 # prisma url, not real db url
 [vars]
 DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiZjU0MTE2MWMtZDFjZi00Y2Q0LWFmNjgtMjc1MTAzOGE5MDkxIiwidGVuYW50X2lkIjoiYTNjMDE4NTViMjRkODUyMWU0YTdkYzY0YzkwY2IzMmExMTRlODBkMmJmZDM1MzZiN2ZjNzQxMDRmYWVjOWUwMyIsImludGVybmFsX3NlY3JldCI6IjJmYWRjMTVhLWRhNDItNDI5NC05MDQyLWY3NWZhMTE0ZTI4ZiJ9.dZaIPCFECsVG3ooYMxWwGmsQuwU-3gi5XQdlFaxTOKc"
+
+JWT_SECRET="do you like rajma chawal?"

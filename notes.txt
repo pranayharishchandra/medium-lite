@@ -30,3 +30,6 @@ A -> allows you to generate the Prisma client code without relying on the Prisma
 Q -> what is "c" in "app.post('/api/v1/user/signup', (c) => {"
 A -> "c" is called context, this has all the information like 
 req, res, env variables
+
+Q -> why we don't write in global context
+A -> every route may be independently deployed, so may be the global execution don't run
