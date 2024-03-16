@@ -43,7 +43,7 @@ blogRouter.use('/*', async (c, next) => {
     // otherwise set the user id in header "userId"
     c.set('userId', userInfo.id)
     await next()
-  } 
+  }
   catch (e: any) {
     c.status(401)
     return c.json({
@@ -54,30 +54,41 @@ blogRouter.use('/*', async (c, next) => {
 
 })
 
-// <===========================>ROUTES<===========================>
-
-
+// <===========================> ROUTES <===========================>
 
 // Route - 3 - (creating post) (title, content, authorId)
 blogRouter.post('/', async (c) => {
-
-	const userId = c.get('userId');
+  
+  const userId = c.get('userId');
   // return c.text("userId: " + userId)
-	const prisma = new PrismaClient({
-		datasourceUrl: c.env?.DATABASE_URL	,
-	}).$extends(withAccelerate());
+  
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env?.DATABASE_URL,
+  }).$extends(withAccelerate());
+  
+  try {
+    const body = await c.req.json()
+    // return c.text("code working till here")
+    // return c.text('body.title: ' + body.title)
 
-	const body = await c.req.json();
-	const post = await prisma.post.create({
-		data: {
-			title: body.title,
-			content: body.content,
-			authorId: userId
-		}
-	});
-	return c.json({
-		id: post.id
-	});
+    // return c.text("userId: " + userId)
+
+    const post = await prisma.post.create({
+      data: {
+        title: body.title,
+        content: body.content,
+        authorId: userId
+      }
+    });
+    return c.json({
+      id: post.id
+    });
+  } catch (e: any) {
+    c.status(401)
+    return c.json({
+      message: e.message
+    })
+  }
 })
 
 // Route - 4 - updating (patch) (id, authorId)
@@ -91,7 +102,6 @@ blogRouter.patch('/', async (c) => {
 
   try {
     const userId = c.get("userId")
-    // const userId = '999999'
 
     if (!userId) {
       throw new Error("userId undefined")
