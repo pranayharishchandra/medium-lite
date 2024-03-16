@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import blogRouter from './routes/blog';
+import userRouter from './routes/user';
 
 
 // Create the main Hono app
@@ -12,6 +13,7 @@ const app = new Hono<{
 
 // routes
 app.route('/api/v1/blog',blogRouter)
+app.route('/api/v1/user',userRouter)
 
 
 

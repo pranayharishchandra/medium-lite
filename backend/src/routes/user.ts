@@ -4,23 +4,20 @@ import { withAccelerate } from '@prisma/extension-accelerate'
 import { Hono } from 'hono';
 import { sign } from 'hono/jwt'
 
-const blogRouter = new Hono<{
+
+const userRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string,
     JWT_SECRET: string,
   }
+  Variables: {
+    userId: string
+  }
 }>();
 
-// Middleware - 1
-blogRouter.use('/*', async (c, next) => {
-
-  await next()
-})
-
-// <====================================><====================================>
 
 // Route - 1 
-blogRouter.post('/signup', async (c) => {
+userRouter.post('/signup', async (c) => {
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env?.DATABASE_URL,
@@ -31,12 +28,16 @@ blogRouter.post('/signup', async (c) => {
 
   try {
 
+    // creating user
     const user = await prisma.user.create({
       data: {
         email: body.email,
         password: body.password
       }
     });
+
+    // 
+    const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
 
     return c.text('jwt here')
   } 
@@ -46,8 +47,8 @@ blogRouter.post('/signup', async (c) => {
   }
 })
 
-// Route - 2
-blogRouter.post('/login', async (c) => {
+// Route - 2 - user login
+userRouter.post('/login', async (c) => {
   // return c.text('signin working')
 
   const prisma = new PrismaClient({
@@ -75,24 +76,14 @@ blogRouter.post('/login', async (c) => {
   }
   catch (error) {
     // console.error('Error signing in:', error);
+    c.status(403)
     return c.text('not valid email')
   }
 })
 
-// Route - 3
-blogRouter.put('/', (c) => {
-  return c.text('Hello Hono! /')
-})
+export default userRouter
 
-// Route - 4
-blogRouter.get('/bulk', (c) => {
-  return c.text('Hello Hono, /bulk!')
-})
-
-// Route - 5
-blogRouter.get('/:id', (c) => {
-  return c.text('Hello Hono! /:id')
-})
-
-
-export default blogRouter
+/* jwt: sign
+JWT (JSON Web Tokens) signing is a process in which you create a token containing some claims (data) and a signature using a secret key. 
+This token can be sent between parties and used to verify the authenticity of the claims and ensure that the token has not been tampered with.
+*/

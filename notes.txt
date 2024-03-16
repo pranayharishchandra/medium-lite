@@ -33,3 +33,7 @@ req, res, env variables
 
 Q -> why we don't write in global context
 A -> every route may be independently deployed, so may be the global execution don't run
+
+NOTES:
+-> commenting out the [vars] section in the wrangler.toml file will not cause any problems or make any difference in your Cloudflare Workers script's behavior.
+
