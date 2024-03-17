@@ -3,6 +3,18 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { Hono } from 'hono';
 import { sign } from 'hono/jwt'
+import { z } from 'zod';
+
+
+// <===========================>ZOD validation<===========================>
+const signupInput = z.object({
+  email: z.string().email(),
+  password: z.string()
+    .min(3)
+    .max(30)
+    .regex(/[a-zA-Z0-9]+/, { message:'Length of password must be more thatn 3 and less than 30 and must contain atleast one number of alphabet' }),
+});
+
 
 
 const userRouter = new Hono<{
@@ -15,6 +27,7 @@ const userRouter = new Hono<{
   }
 }>();
 
+// <===========================> Routes <===========================>
 
 // Route - 1 
 userRouter.post('/signup', async (c) => {
@@ -23,27 +36,32 @@ userRouter.post('/signup', async (c) => {
     datasourceUrl: c.env?.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  // CHALLENGE -> not using await below
-  const body = await c.req.json();
-
   try {
+    // CHALLENGE -> not using await below
+    const body = await c.req.json();
+
+    // Validate request body using Zod schema
+    const validatedData = signupInput.parse(body);
 
     // creating user
     const user = await prisma.user.create({
       data: {
-        email: body.email,
-        password: body.password
+        email: validatedData.email,
+        password: validatedData.password
       }
     });
 
-    // 
+    // Generating JWT token
     const jwt = await sign({ id: user.id }, c.env.JWT_SECRET);
 
     return c.text('jwt here')
   } 
-  catch (e) {
+  catch (e:any) {
     c.status(403);
-    return c.json({ error: "error while signing up, maybe user with this email already exists" });
+    return c.json({ 
+      error: "error while signing up, maybe user with this email already exists",
+      message: e.message
+   });
   }
 })
 

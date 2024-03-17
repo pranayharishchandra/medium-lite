@@ -13,6 +13,7 @@ const blogRouter = new Hono<{
   }
 }>();
 
+
 // <===========================>MIDDLEWARE<===========================>
 
 // If the user is authonticated means having the valid JWT token then they can access the following routes
@@ -83,7 +84,8 @@ blogRouter.post('/', async (c) => {
     return c.json({
       id: post.id
     });
-  } catch (e: any) {
+  } 
+  catch (e: any) {
     c.status(401)
     return c.json({
       message: e.message
