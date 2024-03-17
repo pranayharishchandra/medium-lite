@@ -3,19 +3,7 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { Hono } from 'hono';
 import { sign } from 'hono/jwt'
-import { z } from 'zod';
-
-
-// <===========================>ZOD validation<===========================>
-const signupInput = z.object({
-  email: z.string().email(),
-  password: z.string()
-    .min(3)
-    .max(30)
-    .regex(/[a-zA-Z0-9]+/, { message:'Length of password must be more thatn 3 and less than 30 and must contain atleast one number of alphabet' }),
-});
-
-
+import { signupInput } from '@pranay-tensen/tensenbloglite-common-app'
 
 const userRouter = new Hono<{
   Bindings: {

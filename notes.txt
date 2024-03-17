@@ -37,3 +37,7 @@ A -> every route may be independently deployed, so may be the global execution d
 NOTES:
 -> commenting out the [vars] section in the wrangler.toml file will not cause any problems or make any difference in your Cloudflare Workers script's behavior.
 
+-> hono, express throws error 500 if exception not handled.
+
+==> commons
+npx tsc --init      
