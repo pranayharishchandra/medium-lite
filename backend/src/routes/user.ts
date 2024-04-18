@@ -93,3 +93,7 @@ export default userRouter
 JWT (JSON Web Tokens) signing is a process in which you create a token containing some claims (data) and a signature using a secret key. 
 This token can be sent between parties and used to verify the authenticity of the claims and ensure that the token has not been tampered with.
 */
+
+/*
+* env is not global like in express, so we need to write same code in every function
+ */

@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" // you could also use mongodb, as prisma provides services  for mongodb as well
   url      = env("DATABASE_URL")
 }
 
